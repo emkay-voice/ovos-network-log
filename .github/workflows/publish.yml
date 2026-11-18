@@ -37,7 +37,11 @@ jobs:
           python -m venv /tmp/fresh
           /tmp/fresh/bin/pip install -q dist/*.whl
           OVOS_NETWORK_LOG=1 OVOS_NETWORK_LOG_BUS=0 OVOS_NETWORK_LOG_FILE=/tmp/net.jsonl \
-            /tmp/fresh/bin/python -c "import urllib.request; urllib.request.urlopen('https://example.com/a/path?q=x', timeout=20).read()"
+            /tmp/fresh/bin/python -c "
+          import urllib.request, urllib.error
+          try: urllib.request.urlopen('https://example.com/a/path?q=x', timeout=20).read()
+          except urllib.error.HTTPError: pass   # a 404 is an answer too
+          "
           cat /tmp/net.jsonl
           grep -q '"host": "example.com"' /tmp/net.jsonl
           ! grep -q "a/path" /tmp/net.jsonl
