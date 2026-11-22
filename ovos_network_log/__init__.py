@@ -38,7 +38,7 @@ import threading
 import time
 from functools import lru_cache
 
-__version__ = "0.1.0a1"
+__version__ = "0.1.0a2"
 
 DEFAULT_FILE = "~/.local/state/emkay/network.jsonl"
 BUS_MESSAGE = "ovos.network.request"
